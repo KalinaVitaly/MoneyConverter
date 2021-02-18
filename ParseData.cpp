@@ -1,12 +1,13 @@
 #include "ParseData.h"
 
-void ParseData::parseString(const QString & str) {
+QMap<QString, QPair<QString, double>> ParseData::parseString(const QString & str) {
     QStringList dataList;
     QString updateString = str;
-    QMap<QPair<QString, double>, QPair<QString, double>> dataMap;
+    QString key;
+    QMap<QString, QPair<QString, double>> dataMap;
+    QPair<QString, qreal> value;
     qint32 lastIndex = 0;
-    QPair<QString, double> key;
-    QPair<QString, double> value;
+    qreal coefficient = 0;
 
     //
     // Удаляем лишнии символы
@@ -22,6 +23,7 @@ void ParseData::parseString(const QString & str) {
     updateString.remove(QRegExp("<td>"));
     updateString.replace(QRegExp(","), ".");
     dataList = updateString.split("</td>", Qt::SkipEmptyParts);
+
     //
     //  Создаем пары ключ-значение
     //
@@ -30,13 +32,13 @@ void ParseData::parseString(const QString & str) {
         elem = i % 5;
         if (elem >= 1 && elem <= 4) {
             if (elem == 1) {
-                key.first = dataList[i];
+                key = dataList[i];
             } else if (elem == 2) {
-                key.second = dataList[i].toDouble();
+                coefficient = dataList[i].toDouble();
             } else if (elem == 3) {
                 value.first = dataList[i];
             } else if (elem == 4) {
-                value.second = dataList[i].toDouble();
+                value.second = dataList[i].toDouble() / coefficient;
             }
         } else {
             dataMap.insert(key, value);
@@ -44,6 +46,7 @@ void ParseData::parseString(const QString & str) {
         }
     }
 
-    qDebug() << dataMap;
+    //qDebug() << dataMap;
     //qDebug() << dataList;
+    return dataMap;
 }

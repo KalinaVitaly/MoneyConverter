@@ -1,7 +1,9 @@
 #include "Downloader.h"
 
 DownLoader::DownLoader(QObject * parent)
-    :QObject(parent) {
+    : QObject(parent),
+      dataFromWebsite("")
+{
     networkManager = new QNetworkAccessManager(this);
 
     connect(networkManager, SIGNAL(finished(QNetworkReply *)),
@@ -18,7 +20,12 @@ void DownLoader::getData() {
 void DownLoader::onResult(QNetworkReply *reply) {
     if (reply->error()) {
         qDebug() << reply->errorString();
+        exit(1);
     } else {
-        ParseData::parseString(reply->readAll());
+        dataFromWebsite = QString(reply->readAll());
+        dataMap = ParseData::parseString(dataFromWebsite);
+        qDebug() << dataMap;
+        emit sendData(dataMap);
     }
 }
+

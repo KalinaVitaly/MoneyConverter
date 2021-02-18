@@ -17,9 +17,12 @@ public:
 
 private:
     QNetworkAccessManager *networkManager;
+    QString dataFromWebsite;
+    QMap<QString, QPair<QString, qreal>> dataMap;
 
 signals:
     void onReady();
+    void sendData(const QMap<QString, QPair<QString, qreal>>&);
 
 public slots:
     void onResult(QNetworkReply *);

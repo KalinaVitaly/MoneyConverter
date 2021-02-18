@@ -18,11 +18,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     Downloader.cpp \
+    MainWidget.cpp \
     ParseData.cpp \
     main.cpp
 
 HEADERS += \
   Downloader.h \
+  MainWidget.h \
   ParseData.h
 
 # Default rules for deployment.

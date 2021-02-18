@@ -8,7 +8,7 @@ class ParseData
 public:
     explicit ParseData();
 
-    static void parseString(const QString &);
+    static QMap<QString, QPair<QString, double>> parseString(const QString &);
 };
 
 #endif // PARSEDATA_H
